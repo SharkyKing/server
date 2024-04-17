@@ -3,7 +3,7 @@ const router = express.Router();
 const { User } = require('../models');
 
 router.get("/",async (req, res) => {
-    try{
+    try {
         const users = await User.findAll();
         res.send(users);
     } catch(error) {
@@ -11,8 +11,18 @@ router.get("/",async (req, res) => {
     }
 });
 
-router.get("/:id",async (req, res) => {
-    res.send({data:"User"});
+router.get("/:email",async (req, res) => {
+    const email = req.params.email;
+    try {
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return res.status(404).send({ error: "User not found" });
+        }
+        res.status(200).send({ data: "User found", user });
+    } catch(error) {
+        console.error("Error getting user:", error);
+        res.status(500).send({ error: "Internal Server Error" });
+    }
 });
 
 router.post("/", async(req, res) => {
