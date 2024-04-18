@@ -11,10 +11,10 @@ router.get("/",async (req, res) => {
     }
 });
 
-router.get("/:email",async (req, res) => {
-    const email = req.params.email;
+router.get("/:id",async (req, res) => {
+    const id = req.params.id;
     try {
-        const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({ where: { id: id} });
         if (!user) {
             return res.status(404).send({ error: "User not found" });
         }
