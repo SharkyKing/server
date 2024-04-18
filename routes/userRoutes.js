@@ -25,6 +25,20 @@ router.get("/:id",async (req, res) => {
     }
 });
 
+router.get("/login/:email",async (req, res) => {
+    const email = req.params.email;
+    try {
+        const user = await User.findOne({ where: { email: email} });
+        if (!user) {
+            return res.status(404).send({ error: "User not found" });
+        }
+        res.status(200).send({ data: "User found", user });
+    } catch(error) {
+        console.error("Error getting user:", error);
+        res.status(500).send({ error: "Internal Server Error" });
+    }
+});
+
 router.post("/", async(req, res) => {
     const { email, firstname, lastname, password } = req.body;
     try {
