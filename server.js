@@ -7,10 +7,12 @@ dotenv.config();
 
 const db = require('./models');
 const userRoute = require('./routes/userRoutes');
+const meetingRoute = require('./routes/meetingRoutes');
 
 app.use(cors())
 app.use(bodyParser.json());
 app.use('/api/user', userRoute);
+app.use('/api/meeting', meetingRoute);
 
 db.sequelize.sync().then((req) => {
   app.listen(process.env.PORT, () => {
