@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": "root",
+    "password": "root123",
     "database": "Binect",
     "host": "localhost",
     "dialect": "mssql"
   },
   "test": {
     "username": "root",
-    "password": "root",
+    "password": "root123",
     "database": "Binect",
     "host": "localhost",
     "dialect": "mssql"
   },
   "production": {
     "username": "root",
-    "password": "root",
+    "password": "root123",
     "database": "Binect",
     "host": "localhost",
     "dialect": "mssql"

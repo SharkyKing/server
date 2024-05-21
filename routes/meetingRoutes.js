@@ -26,15 +26,16 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async(req, res) => {
-    const { FirstName, LastName, Email, Phone, MeetingDate, PersonID } = req.body;
+    const { firstName, lastName, phoneNo, email, date, specialist } = req.query;
+    console.log(req.query)
     try {
         const newMeeting = await Meeting.create({ 
-            FirstName,
-            LastName,
-            Email,
-            Phone,
-            MeetingDate,
-            PersonID
+            FirstName:firstName,
+            LastName:lastName,
+            Email:email,
+            Phone:phoneNo,
+            MeetingDate:date,
+            PersonID:specialist
         });
 
         res.status(200).send({ data: "Meeting created", meeting: newMeeting });
