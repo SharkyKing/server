@@ -19,3 +19,8 @@ db.sequelize.sync().then((req) => {
     console.log(` Database server is running on port: ${process.env.PORT}`)
   })
 })
+
+//const user = await User.findOne({ where: { email: 'admin@mail.net'} });
+//if (!user) {
+//    User.create({ Email:'admin@mail.net', FirstName:'Admin', LastName:'Admin', Password:password });
+//}
