@@ -8,7 +8,6 @@ dotenv.config();
 const db = require('./models');
 const userRoute = require('./routes/userRoutes');
 const meetingRoute = require('./routes/meetingRoutes');
-const smsRoute = require('./routes/smsRoutes')
 
 app.use(cors())
 app.use(bodyParser.json());
@@ -16,7 +15,6 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use('/api/user', userRoute);
 app.use('/api/meeting', meetingRoute);
-app.use('/api/sms', smsRoute);
 
 db.sequelize.sync().then((req) => {
   app.listen(process.env.PORT, () => {
