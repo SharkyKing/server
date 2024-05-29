@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
         const { from, to, body } = req.body;
 
         // Initialize Twilio client with your API credentials
-        const client = twilio('ACd157240d6267c01e2893e09bd0b5ffdb', 'ca4c22f816e87255b48939d3d295cc4f');
+        const client = twilio('', '');
 
         // Send the message
         const message = await client.messages.create({
