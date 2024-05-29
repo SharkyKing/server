@@ -1,24 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { Meeting } = require('../models');
+const { Meeting, MeetingState, User } = require('../models');
 
-router.get("/", async (req, res) => {
+router.get("/:email/state/:stateId", async (req, res) => {
+    const email = req.params.email;
+    const stateId = req.params.stateId;
     try {
-        const meetings = await Meeting.findAll();
-        res.send(meetings);
-    } catch(error) {
-        res.status(500).send({ error: "Internal Server Error" });
-    }
-});
-
-router.get("/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-        const meeting = await Meeting.findOne({ where: { id: id } });
-        if (!meeting) {
-            return res.status(404).send({ error: "Meeting not found" });
+        const user = await User.findOne({ where: { Email: email } });
+        if (!user) {
+            return res.status(404).send({ error: "User not found" });
         }
-        res.status(200).send({ data: "Meeting found", meeting });
+
+        const meetings = await Meeting.findAll({ where: { PersonID: user.id, MeetingStateId: stateId } });
+        if (!meetings.length) {
+            return res.status(404).send({ error: "No meetings found for this specialist and state" });
+        }
+        res.status(200).send({ data: "Meetings found", meetings });
     } catch(error) {
         console.error("Error getting meeting:", error);
         res.status(500).send({ error: "Internal Server Error" });
@@ -35,54 +32,13 @@ router.post("/", async(req, res) => {
             Email:email,
             Phone:phoneNo,
             MeetingDate:date,
-            PersonID:specialist
+            PersonID:specialist,
+            MeetingStateId:1
         });
 
         res.status(200).send({ data: "Meeting created", meeting: newMeeting });
     } catch (error) {
         console.error("Error creating meeting:", error);
-        res.status(500).send({ error: "Internal Server Error" });
-    }
-});
-
-router.put("/:id", async (req, res) => {
-    const id = req.params.id;
-    const { FirstName, LastName, Email, Phone, MeetingDate, PersonID } = req.body;
-    try {
-        const meeting = await Meeting.findOne({ where: { id: id } });
-        if (!meeting) {
-            return res.status(404).send({ error: "Meeting not found" });
-        }
-
-        await meeting.update({
-            FirstName,
-            LastName,
-            Email,
-            Phone,
-            MeetingDate,
-            PersonID
-        });
-
-        res.status(200).send({ data: "Meeting updated", meeting });
-    } catch (error) {
-        console.error("Error updating meeting:", error);
-        res.status(500).send({ error: "Internal Server Error" });
-    }
-});
-
-router.delete("/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-        const meeting = await Meeting.findOne({ where: { id: id } });
-        if (!meeting) {
-            return res.status(404).send({ error: "Meeting not found" });
-        }
-
-        await meeting.destroy();
-
-        res.status(200).send({ data: "Meeting deleted" });
-    } catch (error) {
-        console.error("Error deleting meeting:", error);
         res.status(500).send({ error: "Internal Server Error" });
     }
 });

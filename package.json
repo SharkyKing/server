@@ -27,6 +27,7 @@
     "sequelize-cli": "^6.6.2",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
-    "tedious": "^18.1.0"
+    "tedious": "^18.1.0",
+    "twilio": "^5.1.0"
   }
 }

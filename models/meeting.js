@@ -41,8 +41,23 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: true,
         }
-      }
+      },
+      MeetingStateId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'MeetingStates', // Model name
+            key: 'id',
+        }
+    }
     })
+
+    Meeting.associate = (models) => {
+      Meeting.belongsTo(models.MeetingState, {
+          foreignKey: 'MeetingStateId',
+          as: 'state'
+      });
+    };
   
     return Meeting;
   };

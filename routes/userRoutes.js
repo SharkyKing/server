@@ -11,10 +11,10 @@ router.get("/",async (req, res) => {
     }
 });
 
-router.get("/:id",async (req, res) => {
-    const id = req.params.id;
+router.get("/:email",async (req, res) => {
+    const email = req.params.email;
     try {
-        const user = await User.findOne({ where: { id: id} });
+        const user = await User.findOne({ where: { Email: email} });
         if (!user) {
             return res.status(404).send({ error: "User not found" });
         }
@@ -55,8 +55,44 @@ router.post("/", async(req, res) => {
     }
 });
 
-router.put("/:id",async (req, res) => {
-    res.send({data:"User updated"});
+router.put("/:email",async (req, res) => {
+    const { email } = req.params;
+    const { phone, profilePhoto, speciality, info } = req.body;
+
+    try {
+        // Find the user by ID
+        const user = await User.findOne({ where: { Email: email } });
+
+        if (!user) {
+            return res.status(404).send({ error: "User not found" });
+        }
+
+        // Update phone number if provided
+        if (phone !== undefined) {
+            user.Phone = phone;
+        }
+
+        // Update profile photo if provided
+        if (profilePhoto !== undefined) {
+            user.ProfilePhoto = profilePhoto;
+        }
+
+        if (speciality !== undefined) {
+            user.Speciality = speciality;
+        }
+
+        if (info !== undefined) {
+            user.Info = info;
+        }
+
+        // Save the updated user
+        await user.save();
+
+        res.send({ data: "User updated" });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).send({ error: "Internal Server Error" });
+    }
 });
 
 router.delete("/:id",async (req, res) => {
